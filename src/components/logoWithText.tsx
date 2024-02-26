@@ -11,7 +11,6 @@ const LogoWithText = (props: Props) => {
       dir={"row"}
       justify={"space-evenly"}
       align={"flex-end"}
-      mb={6}
     >
       <Box w={36}>
         <AspectRatio maxW={36} ratio={274 / 68} flexShrink={0}>

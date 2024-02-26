@@ -2,14 +2,16 @@ import React, { ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
 import { NextPageWithLayout } from "../_app";
+import { useRouter } from "next/router";
 
 type Props = {};
 
-const ProductPage: NextPageWithLayout = (props: Props) => {
-  return <p>ProductPage</p>;
+const ProductItemPage: NextPageWithLayout = (props: Props) => {
+  const router = useRouter();
+  return <p>Product Id:{router.query.productId}</p>;
 };
 
-ProductPage.getLayout = function getLayout(page: ReactElement) {
+ProductItemPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <RootLayout>
       <PageLayout>{page}</PageLayout>
@@ -17,4 +19,4 @@ ProductPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default ProductPage;
+export default ProductItemPage;

@@ -5,11 +5,11 @@ import { NextPageWithLayout } from "../_app";
 
 type Props = {};
 
-const ProductPage: NextPageWithLayout = (props: Props) => {
-  return <p>ProductPage</p>;
+const ProductCreatePage: NextPageWithLayout = (props: Props) => {
+  return <p>ProductCreatePage</p>;
 };
 
-ProductPage.getLayout = function getLayout(page: ReactElement) {
+ProductCreatePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <RootLayout>
       <PageLayout>{page}</PageLayout>
@@ -17,4 +17,4 @@ ProductPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default ProductPage;
+export default ProductCreatePage;

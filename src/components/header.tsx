@@ -2,6 +2,7 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   Flex,
   IconButton,
   Spacer,
@@ -10,10 +11,17 @@ import {
 import { MdSettings } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa";
 import React from "react";
+import AvatarBadge from "./avatarBadge";
+import { MdAddCircleOutline } from "react-icons/md";
+import { useRouter } from "next/router";
 
-type Props = {};
+type Props = {
+  children: React.ReactNode;
+};
 
 const Header = (props: Props) => {
+  const router = useRouter();
+
   return (
     <Flex
       direction={"row"}
@@ -25,7 +33,7 @@ const Header = (props: Props) => {
       color="white"
       p={4}
     >
-      <Text>Overview</Text>
+      <Text>{props.children ?? ""}</Text>
       <Spacer />
       <IconButton
         aria-label="Settings"
@@ -49,18 +57,15 @@ const Header = (props: Props) => {
         bg="transparent"
         colorScheme={"white"}
       />
-      <Flex>
-        <Avatar src="https://i.imgur.com/FcYnITJ.png" />
-        <Box ml="3">
-          <Text fontWeight="bold">
-            Wilson Wan
-            <Badge ml="1" colorScheme="green">
-              New
-            </Badge>
-          </Text>
-          <Text fontSize="sm">Full Stack Engineer</Text>
-        </Box>
-      </Flex>
+      <Button
+        leftIcon={<MdAddCircleOutline />}
+        colorScheme="orange"
+        variant="solid"
+        rounded={"md"}
+        onClick={() => router.push("/product/create")}
+      >
+        新增商品
+      </Button>
     </Flex>
   );
 };

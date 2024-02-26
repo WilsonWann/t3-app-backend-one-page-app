@@ -1,17 +1,16 @@
 import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
-import PageLayout from "~/components/layout";
+import RootLayout from "~/components/rootLayout";
 
 import { api } from "~/utils/api";
+import type { NextPageWithLayout } from "./_app";
 
-const Home: NextPage = () => {
-  return (
-    <>
-      {/* <PageLayout> */}
-      <AuthShowcase />
-      {/* </PageLayout> */}
-    </>
-  );
+const Home: NextPageWithLayout = () => {
+  return <AuthShowcase />;
+};
+
+Home.getLayout = function getLayout(page: React.ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
 };
 
 export default Home;
