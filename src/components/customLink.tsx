@@ -28,7 +28,7 @@ const CustomLink = (props: Props) => {
         _hover={{
           color: "orange",
         }}
-        className="[&:has(.active)]:border-b [&:has(.active)]:border-b-orange-500 [&:has(.active)]:text-orange-500"
+        className="has-[.active]:border-b has-[.active]:border-b-orange-500 has-[.active]:text-orange-500"
         onClick={onLinkClick}
       >
         <NavLink href={props.href ?? "/#"}>

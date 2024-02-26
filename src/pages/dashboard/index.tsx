@@ -31,7 +31,7 @@ const DashboardPage: NextPageWithLayout = (props: Props) => {
       gap={6}
       h="100%"
       w={"auto"}
-      className="[&>*]:border-4-orange-200 [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:rounded-xl [&>*]:bg-orange-400"
+      className="*:border-4-orange-200 *:flex *:items-center *:justify-center *:rounded-xl *:bg-orange-400"
     >
       <Box gridRow={1} gridColumnStart={1} gridColumnEnd={3}>
         <LinkBox

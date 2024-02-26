@@ -6,7 +6,7 @@ type Props = {
 
 const PageLayout = (props: Props) => {
   return (
-    <div className="flex h-full items-center justify-center overflow-auto border-[1.5rem] border-r-0 border-white bg-white text-xl text-white">
+    <div className="box-siz box-border flex h-full w-auto items-center justify-center overflow-auto border-[1rem] border-white bg-white text-xl text-white">
       {props.children}
     </div>
   );

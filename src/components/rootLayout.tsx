@@ -33,10 +33,22 @@ const RootLayout = (props: PropsWithChildren) => {
 
   return (
     <main className="flex min-h-screen flex-row items-center justify-start overflow-hidden bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-      <Box h="100vh" w="250px" flexGrow={0}>
+      <Box
+        h="100vh"
+        display={{ base: "none", md: "block" }}
+        w={"250px"}
+        flexGrow={0}
+        flexShrink={0}
+      >
         <Sidebar links={links} setPageName={setPageName} />
       </Box>
-      <Flex direction={"column"} h={"100vh"} flexGrow={1} justify={"start"}>
+      <Flex
+        direction={"column"}
+        h={"100vh"}
+        flexGrow={1}
+        justify={"start"}
+        overflow={"hidden"}
+      >
         <Header>{pageName}</Header>
         {props.children}
       </Flex>

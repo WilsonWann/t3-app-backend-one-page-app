@@ -27,11 +27,12 @@ const Header = (props: Props) => {
       direction={"row"}
       bg="blue.500"
       h={16}
-      w="100%"
+      w="auto"
       align={"center"}
       columnGap={4}
       color="white"
       p={4}
+      boxSizing={"border-box"}
     >
       <Text>{props.children ?? ""}</Text>
       <Spacer />
