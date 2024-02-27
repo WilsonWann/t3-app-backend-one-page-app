@@ -2,6 +2,7 @@ import {
   Box,
   RangeSlider,
   RangeSliderFilledTrack,
+  RangeSliderMark,
   RangeSliderThumb,
   RangeSliderTrack,
   Text,
@@ -20,10 +21,8 @@ export type Ref = React.MutableRefObject<ProductType[]>;
 const PriceRangeSlider = (props: Props) => {
   const { minValue, maxValue, setPrices } = props;
 
-  const max = React.useMemo(
-    () => 10 ** Math.floor(maxValue / 10 ** (maxValue.toFixed(0).length - 1)),
-    [maxValue],
-  );
+  const min = React.useMemo(() => Math.floor(minValue / 50) * 50, [minValue]);
+  const max = React.useMemo(() => Math.ceil(maxValue / 50) * 50, [maxValue]);
 
   const [sliderValue, setSliderValue] = React.useState([minValue, maxValue]);
   const [showTooltip, setShowTooltip] = React.useState(false);
@@ -41,7 +40,7 @@ const PriceRangeSlider = (props: Props) => {
       <RangeSlider
         id="slider"
         defaultValue={sliderValue}
-        min={0}
+        min={min}
         max={max}
         colorScheme="orange"
         onChange={(v) => setSliderValue(v)}
@@ -61,7 +60,7 @@ const PriceRangeSlider = (props: Props) => {
           isOpen={showTooltip}
           label={`$${sliderValue[0]}`}
         >
-          <RangeSliderThumb index={0} />
+          <RangeSliderThumb bgColor={"tomato"} index={0} />
         </Tooltip>
         <Tooltip
           hasArrow
@@ -71,7 +70,7 @@ const PriceRangeSlider = (props: Props) => {
           isOpen={showTooltip}
           label={`$${sliderValue[1]}`}
         >
-          <RangeSliderThumb index={1} />
+          <RangeSliderThumb bgColor={"tomato"} index={1} />
         </Tooltip>
       </RangeSlider>
     </Box>

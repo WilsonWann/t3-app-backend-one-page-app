@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import PriceRangeSlider from "./priceRangeSlider";
 import ProductNameFilter from "./productNameFilter";
@@ -35,13 +35,13 @@ const ProductFilters = (props: Props) => {
 
   return (
     <Flex
-      direction="column"
+      direction="row"
       justify="start"
       align="center"
-      width={"md"}
+      width={"100%"}
       h={"auto"}
       gap="6"
-      className="*:flex *:w-full *:items-center *:justify-center *:rounded-xl "
+      className="*:grow-1 *:flex *:w-full *:items-center *:justify-center *:rounded-xl"
     >
       <PriceRangeSlider
         minValue={Math.min(...products.map((product) => product.price))}

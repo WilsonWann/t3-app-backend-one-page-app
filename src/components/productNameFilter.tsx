@@ -15,7 +15,7 @@ const ProductNameFilter = (props: Props) => {
       <Input
         color="black"
         focusBorderColor="red.100"
-        placeholder="Basic usage"
+        placeholder="商品名稱"
         onChange={(e) => setName(e.target.value.toLocaleLowerCase())}
       />
     </Box>

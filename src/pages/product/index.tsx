@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
 import { NextPageWithLayout } from "../_app";
-import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Container, Flex, Spacer, Text } from "@chakra-ui/react";
 import PriceRangeSlider from "~/components/priceRangeSlider";
 import ProductTable from "~/components/productTable";
 import ProductNameFilter from "~/components/productNameFilter";
@@ -58,17 +58,35 @@ const ProductPage: NextPageWithLayout = (props: Props) => {
       h={"100%"}
       maxW={"100%"}
       gap={{ base: "8", md: "5" }}
-      direction={{ base: "column", md: "column" }}
-      justify={{ base: "start", md: "center" }}
+      direction={"column"}
+      justify={"start"}
       align={"center"}
     >
-      <Container w="fit-content" h="auto" paddingInline={0}>
+      <Container
+        paddingInline={0}
+        display={"flex"}
+        flexDir="column"
+        justifyContent="start"
+        alignItems="center"
+      >
+        <Text
+          textAlign={"center"}
+          as="h2"
+          fontSize={"xl"}
+          fontWeight={"bold"}
+          color={"black"}
+        >
+          搜尋商品
+        </Text>
         <ProductFilters
           products={products}
           setFilteredProducts={setFilteredProducts}
         />
       </Container>
-      <ProductTable filteredProducts={filteredProducts} />
+      <ProductTable
+        filteredProducts={filteredProducts}
+        setFilteredProducts={setFilteredProducts}
+      />
       <Spacer />
     </Flex>
   );
