@@ -15,20 +15,21 @@ import {
   Image,
 } from "@chakra-ui/react";
 type Props = {
-  length: number;
   filteredProducts: ProductType[];
 };
 
 const ProductTable = (props: Props) => {
+  const { filteredProducts } = props;
+
   const [checkedItems, setCheckedItems] = React.useState(
-    Array(length).fill(false),
+    Array(filteredProducts.length).fill(false),
   );
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const onParentCheckBoxClick = (checked: boolean) => {
-    setCheckedItems(Array(length).fill(checked));
+    setCheckedItems(Array(filteredProducts.length).fill(checked));
   };
 
   const onCheckBoxClick = (checked: boolean, index: number) => {
@@ -68,7 +69,7 @@ const ProductTable = (props: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {props.filteredProducts.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <Tr key={product.id}>
               <Td className="peer has-[:checked]:!bg-red-200">
                 <Checkbox

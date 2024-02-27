@@ -2,9 +2,11 @@ import React, { ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
 import { NextPageWithLayout } from "../_app";
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
 import PriceRangeSlider from "~/components/priceRangeSlider";
 import ProductTable from "~/components/productTable";
+import ProductNameFilter from "~/components/productNameFilter";
+import ProductFilters from "~/components/productFilters";
 // import Image from "next/image";
 
 type Props = {};
@@ -53,34 +55,21 @@ const ProductPage: NextPageWithLayout = (props: Props) => {
 
   return (
     <Flex
-      maxH={"100%"}
+      h={"100%"}
       maxW={"100%"}
       gap={{ base: "8", md: "5" }}
       direction={{ base: "column", md: "column" }}
       justify={{ base: "start", md: "center" }}
       align={"center"}
     >
-      <Container w="fit-content" h="100%" paddingInline={0}>
-        <Flex
-          direction="column"
-          justify="start"
-          align="center"
-          width={"md"}
-          h={"auto"}
-          gap="4"
-          className="*:flex *:w-full *:items-center *:justify-center *:rounded-xl *:bg-orange-600"
-        >
-          <PriceRangeSlider
-            products={products}
-            setFilteredProducts={setFilteredProducts}
-          />
-          <Box>asdfasdfasdf</Box>
-        </Flex>
+      <Container w="fit-content" h="auto" paddingInline={0}>
+        <ProductFilters
+          products={products}
+          setFilteredProducts={setFilteredProducts}
+        />
       </Container>
-      <ProductTable
-        length={filteredProducts.length}
-        filteredProducts={filteredProducts}
-      />
+      <ProductTable filteredProducts={filteredProducts} />
+      <Spacer />
     </Flex>
   );
 };
