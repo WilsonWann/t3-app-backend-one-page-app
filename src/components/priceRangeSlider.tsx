@@ -1,14 +1,13 @@
+import React from "react";
 import {
   Box,
   RangeSlider,
   RangeSliderFilledTrack,
-  RangeSliderMark,
   RangeSliderThumb,
   RangeSliderTrack,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import React from "react";
 
 type Props = {
   minValue: number;
@@ -42,6 +41,7 @@ const PriceRangeSlider = (props: Props) => {
         defaultValue={sliderValue}
         min={min}
         max={max}
+        step={5}
         colorScheme="orange"
         onChange={(v) => setSliderValue(v)}
         onMouseEnter={() => setShowTooltip(true)}

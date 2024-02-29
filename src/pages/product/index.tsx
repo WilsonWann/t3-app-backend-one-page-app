@@ -2,12 +2,9 @@ import React, { ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
 import { NextPageWithLayout } from "../_app";
-import { Box, Container, Flex, Spacer, Text } from "@chakra-ui/react";
-import PriceRangeSlider from "~/components/priceRangeSlider";
+import { Container, Flex, Spacer, Text } from "@chakra-ui/react";
 import ProductTable from "~/components/productTable";
-import ProductNameFilter from "~/components/productNameFilter";
 import ProductFilters from "~/components/productFilters";
-// import Image from "next/image";
 
 type Props = {};
 

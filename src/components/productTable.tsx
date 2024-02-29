@@ -26,6 +26,7 @@ import {
   MdKeyboardArrowDown,
   MdMoreHoriz,
 } from "react-icons/md";
+import SortableHeader from "./sortableHeader";
 
 type Props = {
   filteredProducts: ProductType[];
@@ -35,14 +36,9 @@ type Props = {
 const ProductTable = (props: Props) => {
   const { filteredProducts, setFilteredProducts } = props;
 
-  const [activeSorting, setActiveSorting] = React.useState("");
-
-  const [isIdAsc, setIsIdAsc] = React.useState(true);
-  const [isPhotoAsc, setIsPhotoAsc] = React.useState(true);
-  const [isNameAsc, setIsNameAsc] = React.useState(true);
-  const [isStockAsc, setIsStockAsc] = React.useState(true);
-  const [isPriceAsc, setIsPriceAsc] = React.useState(true);
-  const [isCreatedAtAsc, setIsCreatedAtAsc] = React.useState(true);
+  const [activeSorting, setActiveSorting] = React.useState<
+    keyof ProductType | undefined
+  >();
 
   const [checkedItems, setCheckedItems] = React.useState(
     Array(filteredProducts.length).fill(false),
@@ -61,69 +57,34 @@ const ProductTable = (props: Props) => {
     setCheckedItems(newCheckedItems);
   };
 
-  const sortById = () => {
-    setFilteredProducts(
-      filteredProducts.sort((a, b) =>
-        isIdAsc ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id),
-      ),
-    );
-    setIsIdAsc((prevState) => !prevState);
-    setActiveSorting("id");
-  };
-  const sortByPhoto = () => {
-    setFilteredProducts(
-      filteredProducts.sort((a, b) =>
-        isPhotoAsc
-          ? b.image.localeCompare(a.image)
-          : a.image.localeCompare(b.image),
-      ),
-    );
+  const sortingBy = React.useCallback(
+    (isAsc: boolean, sortingTitle: keyof ProductType) => {
+      setActiveSorting(sortingTitle);
+      const firstProduct = filteredProducts.at(0);
+      if (!firstProduct) return;
 
-    setIsPhotoAsc((prevState) => !prevState);
-    setActiveSorting("photo");
-  };
-  const sortByName = () => {
-    setFilteredProducts(
-      filteredProducts.sort((a, b) =>
-        isNameAsc ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name),
-      ),
-    );
+      if (typeof firstProduct[sortingTitle] === "string") {
+        setFilteredProducts((prevFilteredProducts) =>
+          prevFilteredProducts.toSorted((a, b) =>
+            isAsc
+              ? `${b[sortingTitle]}`.localeCompare(`${a[sortingTitle]}`)
+              : `${a[sortingTitle]}`.localeCompare(`${b[sortingTitle]}`),
+          ),
+        );
+      }
 
-    setIsNameAsc((prevState) => !prevState);
-    setActiveSorting("name");
-  };
-  const sortByStock = () => {
-    setFilteredProducts(
-      filteredProducts.sort((a, b) =>
-        isStockAsc ? b.inStockQty - a.inStockQty : a.inStockQty - b.inStockQty,
-      ),
-    );
-
-    setIsStockAsc((prevState) => !prevState);
-    setActiveSorting("stock");
-  };
-  const sortByPrice = () => {
-    setFilteredProducts(
-      filteredProducts.sort((a, b) =>
-        isPriceAsc ? b.price - a.price : a.price - b.price,
-      ),
-    );
-
-    setIsPriceAsc((prevState) => !prevState);
-    setActiveSorting("price");
-  };
-  const sortByCreatedAt = () => {
-    setFilteredProducts(
-      filteredProducts.sort((a, b) =>
-        isCreatedAtAsc
-          ? b.createdAt.localeCompare(a.createdAt)
-          : a.createdAt.localeCompare(b.createdAt),
-      ),
-    );
-
-    setIsCreatedAtAsc((prevState) => !prevState);
-    setActiveSorting("createdAt");
-  };
+      if (typeof firstProduct[sortingTitle] === "number") {
+        setFilteredProducts((prevFilteredProducts) =>
+          prevFilteredProducts.toSorted((a, b) =>
+            isAsc
+              ? +b[sortingTitle] - +a[sortingTitle]
+              : +a[sortingTitle] - +b[sortingTitle],
+          ),
+        );
+      }
+    },
+    [setActiveSorting],
+  );
 
   const dateFormat = (dateString: string) => {
     const date = new Date(dateString);
@@ -155,104 +116,49 @@ const ProductTable = (props: Props) => {
               />
             </Th>
             <Th fontSize={"lg"}>
-              <Button
-                rightIcon={
-                  isIdAsc ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />
-                }
-                variant={"ghost"}
-                colorScheme={"orange"}
-                color={"black"}
-                onClick={sortById}
-                textTransform={"uppercase"}
-                isActive={"id" === activeSorting}
-                className="[&>span]:opacity-0 [&>span]:hover:opacity-100 [&>span]:data-[active]:opacity-100"
-              >
-                id
-              </Button>
+              <SortableHeader
+                sortBy={sortingBy}
+                showTitle={"id"}
+                activeSorting={activeSorting}
+              />
             </Th>
             <Th fontSize={"lg"}>
-              <Button
-                rightIcon={
-                  isPhotoAsc ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />
-                }
-                variant={"ghost"}
-                colorScheme={"orange"}
-                color={"black"}
-                onClick={sortByPhoto}
-                textTransform={"uppercase"}
-                isActive={"photo" === activeSorting}
-                className="[&>span]:opacity-0 [&>span]:hover:opacity-100 [&>span]:data-[active]:opacity-100"
-              >
-                photo
-              </Button>
+              <SortableHeader
+                sortBy={sortingBy}
+                keyTitle="image"
+                showTitle={"photo"}
+                activeSorting={activeSorting}
+              />
             </Th>
             <Th fontSize={"lg"}>
-              <Button
-                rightIcon={
-                  isNameAsc ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />
-                }
-                variant={"ghost"}
-                colorScheme={"orange"}
-                color={"black"}
-                onClick={sortByName}
-                textTransform={"uppercase"}
-                isActive={"name" === activeSorting}
-                className="[&>span]:opacity-0 [&>span]:hover:opacity-100 [&>span]:data-[active]:opacity-100"
-              >
-                name
-              </Button>
+              <SortableHeader
+                sortBy={sortingBy}
+                showTitle={"name"}
+                activeSorting={activeSorting}
+              />
             </Th>
             <Th fontSize={"lg"}>
-              <Button
-                rightIcon={
-                  isStockAsc ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />
-                }
-                variant={"ghost"}
-                colorScheme={"orange"}
-                color={"black"}
-                onClick={sortByStock}
-                textTransform={"uppercase"}
-                isActive={"stock" === activeSorting}
-                className="[&>span]:opacity-0 [&>span]:hover:opacity-100 [&>span]:data-[active]:opacity-100"
-              >
-                stock
-              </Button>
+              <SortableHeader
+                sortBy={sortingBy}
+                keyTitle={"inStockQty"}
+                showTitle={"stock"}
+                activeSorting={activeSorting}
+              />
             </Th>
             <Th fontSize={"lg"}>
-              <Button
-                rightIcon={
-                  isPriceAsc ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />
-                }
-                variant={"ghost"}
-                colorScheme={"orange"}
-                color={"black"}
-                onClick={sortByPrice}
-                textTransform={"uppercase"}
-                isActive={"price" === activeSorting}
-                className="[&>span]:opacity-0 [&>span]:hover:opacity-100 [&>span]:data-[active]:opacity-100"
-              >
-                price
-              </Button>
+              <SortableHeader
+                sortBy={sortingBy}
+                showTitle={"price"}
+                activeSorting={activeSorting}
+              />
             </Th>
             <Th fontSize={"lg"}>
-              <Button
-                rightIcon={
-                  isCreatedAtAsc ? (
-                    <MdKeyboardArrowUp />
-                  ) : (
-                    <MdKeyboardArrowDown />
-                  )
-                }
-                variant={"ghost"}
-                colorScheme={"orange"}
-                color={"black"}
-                onClick={sortByCreatedAt}
-                textTransform={"uppercase"}
-                isActive={"createdAt" === activeSorting}
-                className="[&>span]:opacity-0 [&>span]:hover:opacity-100 [&>span]:data-[active]:opacity-100"
-              >
-                created at
-              </Button>
+              <SortableHeader
+                sortBy={sortingBy}
+                keyTitle={"createdAt"}
+                showTitle={"created at"}
+                activeSorting={activeSorting}
+              />
             </Th>
             <Th>actions</Th>
           </Tr>
