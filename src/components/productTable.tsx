@@ -13,24 +13,27 @@ import {
   Tooltip,
   AspectRatio,
   Image,
-  Button,
-  ButtonGroup,
   IconButton,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import {
-  MdKeyboardArrowUp,
-  MdKeyboardArrowDown,
-  MdMoreHoriz,
-} from "react-icons/md";
+import { MdMoreHoriz } from "react-icons/md";
 import SortableHeader from "./sortableHeader";
 
 type Props = {
   filteredProducts: ProductType[];
   setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
+};
+
+const dateFormat = (dateString: string) => {
+  const date = new Date(dateString);
+  const options = {
+    calendar: "ko-KR",
+  };
+  const dateFormat = new Intl.DateTimeFormat("ko-KR");
+  return dateFormat.format(date);
 };
 
 const ProductTable = (props: Props) => {
@@ -39,23 +42,6 @@ const ProductTable = (props: Props) => {
   const [activeSorting, setActiveSorting] = React.useState<
     keyof ProductType | undefined
   >();
-
-  const [checkedItems, setCheckedItems] = React.useState(
-    Array(filteredProducts.length).fill(false),
-  );
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
-  const onParentCheckBoxClick = (checked: boolean) => {
-    setCheckedItems(Array(filteredProducts.length).fill(checked));
-  };
-
-  const onCheckBoxClick = (checked: boolean, index: number) => {
-    const newCheckedItems = [...checkedItems];
-    newCheckedItems[index] = checked;
-    setCheckedItems(newCheckedItems);
-  };
 
   const sortingBy = React.useCallback(
     (isAsc: boolean, sortingTitle: keyof ProductType) => {
@@ -83,17 +69,28 @@ const ProductTable = (props: Props) => {
         );
       }
     },
-    [setActiveSorting],
+    [filteredProducts],
   );
 
-  const dateFormat = (dateString: string) => {
-    const date = new Date(dateString);
-    const options = {
-      calendar: "ko-KR",
-    };
-    const dateFormat = new Intl.DateTimeFormat("ko-KR");
-    return dateFormat.format(date);
-  };
+  const [checkedItems, setCheckedItems] = React.useState(
+    Array(filteredProducts.length).fill(false),
+  );
+
+  const parentCheckBoxClick = React.useCallback(
+    (checked: boolean) =>
+      setCheckedItems(Array(filteredProducts.length).fill(checked)),
+    [filteredProducts],
+  );
+
+  const childCheckBoxClick = React.useCallback(
+    (checked: boolean, index: number) =>
+      setCheckedItems((prevCheckedItems) => {
+        const newCheckedItems = [...prevCheckedItems];
+        newCheckedItems[index] = checked;
+        return newCheckedItems;
+      }),
+    [],
+  );
 
   return (
     <TableContainer
@@ -109,10 +106,9 @@ const ProductTable = (props: Props) => {
         <Thead>
           <Tr textTransform={"uppercase"}>
             <Th>
-              <Checkbox
-                isChecked={allChecked}
-                isIndeterminate={isIndeterminate}
-                onChange={(e) => onParentCheckBoxClick(e.target.checked)}
+              <ParentCheckbox
+                checkedItems={checkedItems}
+                callback={parentCheckBoxClick}
               />
             </Th>
             <Th fontSize={"lg"}>
@@ -170,9 +166,10 @@ const ProductTable = (props: Props) => {
                 textAlign={"center"}
                 className="peer has-[:checked]:!bg-red-200"
               >
-                <Checkbox
+                <ChildCheckbox
+                  index={index}
                   isChecked={checkedItems[index]}
-                  onChange={(e) => onCheckBoxClick(e.target.checked, index)}
+                  callback={childCheckBoxClick}
                 />
               </Td>
               <Td
@@ -283,3 +280,42 @@ const ProductTable = (props: Props) => {
 };
 
 export default ProductTable;
+
+type ParentCheckboxProps = {
+  checkedItems: boolean[];
+  callback: (checked: boolean) => void;
+};
+function ParentCheckbox(props: ParentCheckboxProps) {
+  const allChecked = props.checkedItems.every(Boolean);
+  const isIndeterminate = props.checkedItems.some(Boolean) && !allChecked;
+
+  const onParentCheckBoxClick = (checked: boolean) => {
+    props.callback && props.callback(checked);
+  };
+
+  return (
+    <Checkbox
+      isChecked={allChecked}
+      isIndeterminate={isIndeterminate}
+      onChange={(e) => onParentCheckBoxClick(e.target.checked)}
+    />
+  );
+}
+
+type ChildCheckboxProps = {
+  index: number;
+  isChecked: boolean;
+  callback: (checked: boolean, index: number) => void;
+};
+function ChildCheckbox(props: ChildCheckboxProps) {
+  const onCheckBoxClick = (checked: boolean, index: number) => {
+    props.callback && props.callback(checked, index);
+  };
+
+  return (
+    <Checkbox
+      isChecked={props.isChecked}
+      onChange={(e) => onCheckBoxClick(e.target.checked, props.index)}
+    />
+  );
+}
