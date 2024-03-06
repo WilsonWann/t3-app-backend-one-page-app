@@ -1,9 +1,7 @@
 import { Avatar, Badge, Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
-type Props = {};
-
-const AvatarBadge = (props: Props) => {
+const AvatarBadge = () => {
   return (
     <Flex align="center" justify={"center"} color="white">
       <Avatar src="https://i.imgur.com/FcYnITJ.png" />

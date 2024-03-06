@@ -1,9 +1,7 @@
 import { AspectRatio, Box, Flex, Image, Text } from "@chakra-ui/react";
 import logo from "~/assets/logo/logo_white.png";
 
-type Props = {};
-
-const LogoWithText = (props: Props) => {
+const LogoWithText = () => {
   return (
     <Flex
       bg="blue.500"

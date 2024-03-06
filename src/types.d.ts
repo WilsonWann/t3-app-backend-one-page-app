@@ -1,3 +1,5 @@
+import type { IconType } from "react-icons/lib";
+
 type LinkType = {
   name: string
   href: string

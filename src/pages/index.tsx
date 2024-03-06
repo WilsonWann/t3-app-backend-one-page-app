@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import RootLayout from "~/components/rootLayout";
 

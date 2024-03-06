@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { MdMoreHoriz } from "react-icons/md";
 import SortableHeader from "./sortableHeader";
-import { ShoppingItem } from "@prisma/client";
+import type { ShoppingItem } from "@prisma/client";
 import dateFormat from "~/utils/dateFormat";
 import dollarFormat from "~/utils/dollarFormat";
 
@@ -64,10 +64,10 @@ const ProductTable = (props: Props) => {
         );
       }
     },
-    [filteredProducts],
+    [filteredProducts, setFilteredProducts],
   );
 
-  const [checkedItems, setCheckedItems] = React.useState(
+  const [checkedItems, setCheckedItems] = React.useState<boolean[]>(
     Array(filteredProducts.length).fill(false),
   );
 
@@ -165,7 +165,7 @@ const ProductTable = (props: Props) => {
               >
                 <ChildCheckbox
                   index={index}
-                  isChecked={checkedItems[index]}
+                  isChecked={checkedItems[index]!}
                   callback={childCheckBoxClick}
                 />
               </Td>

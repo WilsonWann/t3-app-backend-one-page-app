@@ -1,17 +1,7 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  IconButton,
-  Spacer,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Flex, IconButton, Spacer, Text } from "@chakra-ui/react";
 import { MdSettings } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa";
 import React from "react";
-import AvatarBadge from "./avatarBadge";
 import { MdAddCircleOutline } from "react-icons/md";
 import { useRouter } from "next/router";
 

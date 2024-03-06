@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { ShoppingItem } from "@prisma/client";
+import type { ShoppingItem } from "@prisma/client";
 import React from "react";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 type Props = {

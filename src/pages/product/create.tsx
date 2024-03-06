@@ -1,11 +1,9 @@
-import React, { ReactElement } from "react";
+import React, { type ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
-import { NextPageWithLayout } from "../_app";
+import type { NextPageWithLayout } from "../_app";
 
-type Props = {};
-
-const ProductCreatePage: NextPageWithLayout = (props: Props) => {
+const ProductCreatePage: NextPageWithLayout = () => {
   return <p>ProductCreatePage</p>;
 };
 

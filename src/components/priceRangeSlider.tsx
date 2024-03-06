@@ -8,6 +8,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import type { ProductType } from "~/types";
 
 type Props = {
   minValue: number;

@@ -1,8 +1,9 @@
 import React from "react";
-import { useDisclosure, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import LogoWithText from "./logoWithText";
 import CustomLink from "./customLink";
 import AvatarBadge from "./avatarBadge";
+import type { LinkType } from "~/types";
 
 type Props = {
   links: LinkType[];
@@ -10,8 +11,6 @@ type Props = {
 };
 
 const Sidebar = (props: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <Flex

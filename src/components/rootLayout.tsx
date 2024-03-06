@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren } from "react";
 import Sidebar from "./sidebar";
 import Header from "./header";
 import { Box, Flex } from "@chakra-ui/react";
@@ -6,6 +6,7 @@ import { HiOutlinePresentationChartBar } from "react-icons/hi";
 import { BsBoxSeam } from "react-icons/bs";
 import { LuClipboardList } from "react-icons/lu";
 import { useRouter } from "next/router";
+import type { LinkType } from "~/types";
 
 const links: LinkType[] = [
   {

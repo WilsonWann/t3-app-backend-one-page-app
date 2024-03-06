@@ -40,11 +40,11 @@ export const shoppingItemRouter = createTRPCRouter({
       });
     }),
 
-  getLatest: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.shoppingItem.findFirst({
-      orderBy: { createdBy: "desc" },
-    });
-  }),
+  // getLatest: protectedProcedure.query(({ ctx }) => {
+  //   return ctx.db.shoppingItem.findFirst({
+  //     orderBy: { createdBy: "desc" },
+  //   });
+  // }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";

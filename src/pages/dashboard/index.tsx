@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
+import React, { type ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
-import { NextPageWithLayout } from "../_app";
+import type { NextPageWithLayout } from "../_app";
 import {
   Box,
   Grid,
@@ -21,9 +21,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-type Props = {};
-
-const DashboardPage: NextPageWithLayout = (props: Props) => {
+const DashboardPage: NextPageWithLayout = () => {
   return (
     <Grid
       templateColumns="repeat(3, 20rem)"

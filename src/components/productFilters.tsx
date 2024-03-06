@@ -1,8 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import PriceRangeSlider from "./priceRangeSlider";
 import ProductNameFilter from "./productNameFilter";
-import { ShoppingItem } from "@prisma/client";
+import type { ShoppingItem } from "@prisma/client";
 
 type Props = {
   products: ShoppingItem[];
@@ -32,7 +32,7 @@ const ProductFilters = (props: Props) => {
 
       setFilteredProducts(newFilteredProducts);
     }
-  }, [prices, name]);
+  }, [prices, name, products, setFilteredProducts]);
 
   return (
     <Flex

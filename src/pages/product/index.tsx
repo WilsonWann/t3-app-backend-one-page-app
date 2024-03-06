@@ -1,16 +1,14 @@
-import React, { ReactElement } from "react";
+import React, { type ReactElement } from "react";
 import RootLayout from "~/components/rootLayout";
 import PageLayout from "~/components/pageLayout";
-import { NextPageWithLayout } from "../_app";
+import type { NextPageWithLayout } from "../_app";
 import { Container, Flex, Spacer, Text } from "@chakra-ui/react";
 import ProductTable from "~/components/productTable";
 import ProductFilters from "~/components/productFilters";
 import { api } from "~/utils/api";
 import type { ShoppingItem } from "@prisma/client";
 
-type Props = {};
-
-const ProductPage: NextPageWithLayout = (props: Props) => {
+const ProductPage: NextPageWithLayout = () => {
   const { data, isLoading } = api.shoppingItem.getAll.useQuery();
 
   if (isLoading) return <div>Loading...</div>;
