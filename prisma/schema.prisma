@@ -64,18 +64,18 @@ model VerificationToken {
 }
 
 model ShoppingItem {
-  id                   String     @id @default(cuid())
-  itemName             String     @unique
-  itemSubtitle         String
-  itemDescription      String
-  imageSrc             String
-  imageAlt             String
-  itemPrice            Int
-  itemSpecialPrice     Int
-  itemAvaiableQuantity Int?
-  updatedAt            DateTime   @updatedAt
-  createdAt            DateTime   @default(now())
-  cartItem             CartItem[]
+  id                    String     @id @default(cuid())
+  itemName              String     @unique
+  itemSubtitle          String
+  itemDescription       String
+  imageSrc              String
+  imageAlt              String
+  itemPrice             Int
+  itemSpecialPrice      Int?
+  itemAvailableQuantity Int        @default(0)
+  updatedAt             DateTime   @updatedAt
+  createdAt             DateTime   @default(now())
+  cartItem              CartItem[]
 }
 
 model LogisticsMethod {

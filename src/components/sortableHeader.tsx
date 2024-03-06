@@ -1,11 +1,12 @@
 import { Button } from "@chakra-ui/react";
+import { ShoppingItem } from "@prisma/client";
 import React from "react";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 type Props = {
-  sortBy: (isAsc: boolean, keyTitle: keyof ProductType) => void;
-  keyTitle?: keyof ProductType;
+  sortBy: (isAsc: boolean, keyTitle: keyof ShoppingItem) => void;
+  keyTitle?: keyof ShoppingItem;
   showTitle: string;
-  activeSorting?: keyof ProductType;
+  activeSorting?: keyof ShoppingItem;
 };
 
 const SortableHeader = (props: Props) => {
@@ -15,7 +16,7 @@ const SortableHeader = (props: Props) => {
 
   const onButtonClick = () => {
     setIsAsc((prevState) => {
-      props.sortBy(prevState, keyTitle as keyof ProductType);
+      props.sortBy(prevState, keyTitle as keyof ShoppingItem);
       return !prevState;
     });
   };

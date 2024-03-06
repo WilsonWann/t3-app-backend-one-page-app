@@ -2,10 +2,11 @@ import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import PriceRangeSlider from "./priceRangeSlider";
 import ProductNameFilter from "./productNameFilter";
+import { ShoppingItem } from "@prisma/client";
 
 type Props = {
-  products: ProductType[];
-  setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  products: ShoppingItem[];
+  setFilteredProducts: React.Dispatch<React.SetStateAction<ShoppingItem[]>>;
 };
 
 const ProductFilters = (props: Props) => {
@@ -14,8 +15,8 @@ const ProductFilters = (props: Props) => {
   const [name, setName] = React.useState<string>("");
 
   React.useEffect(() => {
-    let lowerLimit = Math.min(...products.map((product) => product.price));
-    let upperLimit = Math.max(...products.map((product) => product.price));
+    let lowerLimit = Math.min(...products.map((product) => product.itemPrice));
+    let upperLimit = Math.max(...products.map((product) => product.itemPrice));
     if (prices || name) {
       if (prices.length !== 0) {
         lowerLimit = prices[0]!;
@@ -24,9 +25,9 @@ const ProductFilters = (props: Props) => {
       const newProducts = [...products];
       const newFilteredProducts = newProducts.filter(
         (product) =>
-          product.price >= lowerLimit &&
-          product.price <= upperLimit &&
-          product.name.toLocaleLowerCase().includes(name),
+          product.itemPrice >= lowerLimit &&
+          product.itemPrice <= upperLimit &&
+          product.itemName.toLocaleLowerCase().includes(name),
       );
 
       setFilteredProducts(newFilteredProducts);
@@ -44,8 +45,8 @@ const ProductFilters = (props: Props) => {
       className="*:grow-1 *:flex *:w-full *:items-center *:justify-center *:rounded-xl"
     >
       <PriceRangeSlider
-        minValue={Math.min(...products.map((product) => product.price))}
-        maxValue={Math.max(...products.map((product) => product.price))}
+        minValue={Math.min(...products.map((product) => product.itemPrice))}
+        maxValue={Math.max(...products.map((product) => product.itemPrice))}
         setPrices={setPrices}
       />
       <ProductNameFilter setName={setName} />

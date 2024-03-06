@@ -22,13 +22,25 @@ const config = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'imgur.com',
+        hostname: 'store.storeimages.cdn-apple.com',
         port: '',
         pathname: '/**'
       },
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
+        hostname: 'img.pchome.com.tw',
+        port: '',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn-stamplib.casetify.com',
+        port: '',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'shop.mohd.it',
         port: '',
         pathname: '/**'
       },

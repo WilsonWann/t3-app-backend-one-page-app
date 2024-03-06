@@ -5,50 +5,35 @@ import { NextPageWithLayout } from "../_app";
 import { Container, Flex, Spacer, Text } from "@chakra-ui/react";
 import ProductTable from "~/components/productTable";
 import ProductFilters from "~/components/productFilters";
+import { api } from "~/utils/api";
+import type { ShoppingItem } from "@prisma/client";
 
 type Props = {};
 
-const products: ProductType[] = [
-  {
-    id: "1",
-    name: "Headphone",
-    price: 100,
-    description: "Product 1 description",
-    image: "https://picsum.photos/150/150",
-    createdAt: "2022-01-01",
-    inStockQty: 10,
-  },
-  {
-    id: "2",
-    name: "Shoes",
-    price: 250,
-    description: "Product 1 description",
-    image: "https://picsum.photos/250/250",
-    createdAt: "2022-03-12",
-    inStockQty: 5,
-  },
-  {
-    id: "3",
-    name: "Digital clock",
-    price: 348,
-    description: "Product 1 description",
-    image: "https://picsum.photos/350/350",
-    createdAt: "2022-08-19",
-    inStockQty: 0,
-  },
-  {
-    id: "4",
-    name: "Toy car",
-    price: 198,
-    description: "Product 1 description",
-    image: "https://picsum.photos/450/450",
-    createdAt: "2023-05-02",
-    inStockQty: 6,
-  },
-];
-
 const ProductPage: NextPageWithLayout = (props: Props) => {
-  const [filteredProducts, setFilteredProducts] = React.useState(products);
+  const { data, isLoading } = api.shoppingItem.getAll.useQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!data) return <div>No data</div>;
+
+  return <InnerProductPage data={data} />;
+};
+
+ProductPage.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <RootLayout>
+      <PageLayout>{page}</PageLayout>
+    </RootLayout>
+  );
+};
+
+export default ProductPage;
+
+type InnerProductPageProps = {
+  data: ShoppingItem[];
+};
+function InnerProductPage(props: InnerProductPageProps) {
+  const [filteredProducts, setFilteredProducts] = React.useState(props.data);
 
   return (
     <Flex
@@ -76,7 +61,7 @@ const ProductPage: NextPageWithLayout = (props: Props) => {
           搜尋商品
         </Text>
         <ProductFilters
-          products={products}
+          products={props.data}
           setFilteredProducts={setFilteredProducts}
         />
       </Container>
@@ -87,14 +72,4 @@ const ProductPage: NextPageWithLayout = (props: Props) => {
       <Spacer />
     </Flex>
   );
-};
-
-ProductPage.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <RootLayout>
-      <PageLayout>{page}</PageLayout>
-    </RootLayout>
-  );
-};
-
-export default ProductPage;
+}

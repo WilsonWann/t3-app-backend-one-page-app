@@ -18,33 +18,28 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Flex,
 } from "@chakra-ui/react";
 import { MdMoreHoriz } from "react-icons/md";
 import SortableHeader from "./sortableHeader";
+import { ShoppingItem } from "@prisma/client";
+import dateFormat from "~/utils/dateFormat";
+import dollarFormat from "~/utils/dollarFormat";
 
 type Props = {
-  filteredProducts: ProductType[];
-  setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
-};
-
-const dateFormat = (dateString: string) => {
-  const date = new Date(dateString);
-  const options = {
-    calendar: "ko-KR",
-  };
-  const dateFormat = new Intl.DateTimeFormat("ko-KR");
-  return dateFormat.format(date);
+  filteredProducts: ShoppingItem[];
+  setFilteredProducts: React.Dispatch<React.SetStateAction<ShoppingItem[]>>;
 };
 
 const ProductTable = (props: Props) => {
   const { filteredProducts, setFilteredProducts } = props;
 
   const [activeSorting, setActiveSorting] = React.useState<
-    keyof ProductType | undefined
+    keyof ShoppingItem | undefined
   >();
 
   const sortingBy = React.useCallback(
-    (isAsc: boolean, sortingTitle: keyof ProductType) => {
+    (isAsc: boolean, sortingTitle: keyof ShoppingItem) => {
       setActiveSorting(sortingTitle);
       const firstProduct = filteredProducts.at(0);
       if (!firstProduct) return;
@@ -63,8 +58,8 @@ const ProductTable = (props: Props) => {
         setFilteredProducts((prevFilteredProducts) =>
           prevFilteredProducts.toSorted((a, b) =>
             isAsc
-              ? +b[sortingTitle] - +a[sortingTitle]
-              : +a[sortingTitle] - +b[sortingTitle],
+              ? +(b[sortingTitle] ?? 0) - +(a[sortingTitle] ?? 0)
+              : +(a[sortingTitle] ?? 0) - +(b[sortingTitle] ?? 0),
           ),
         );
       }
@@ -105,50 +100,52 @@ const ProductTable = (props: Props) => {
         </TableCaption>
         <Thead>
           <Tr textTransform={"uppercase"}>
-            <Th>
+            <Th textAlign="center">
               <ParentCheckbox
                 checkedItems={checkedItems}
                 callback={parentCheckBoxClick}
               />
             </Th>
-            <Th fontSize={"lg"}>
+            <Th textAlign="center" fontSize={"lg"}>
               <SortableHeader
                 sortBy={sortingBy}
                 showTitle={"id"}
                 activeSorting={activeSorting}
               />
             </Th>
-            <Th fontSize={"lg"}>
+            <Th textAlign="center" fontSize={"lg"}>
               <SortableHeader
                 sortBy={sortingBy}
-                keyTitle="image"
+                keyTitle="imageSrc"
                 showTitle={"photo"}
                 activeSorting={activeSorting}
               />
             </Th>
-            <Th fontSize={"lg"}>
+            <Th textAlign="center" fontSize={"lg"}>
               <SortableHeader
                 sortBy={sortingBy}
+                keyTitle={"itemName"}
                 showTitle={"name"}
                 activeSorting={activeSorting}
               />
             </Th>
-            <Th fontSize={"lg"}>
+            <Th textAlign="center" fontSize={"lg"}>
               <SortableHeader
                 sortBy={sortingBy}
-                keyTitle={"inStockQty"}
+                keyTitle={"itemAvailableQuantity"}
                 showTitle={"stock"}
                 activeSorting={activeSorting}
               />
             </Th>
-            <Th fontSize={"lg"}>
+            <Th textAlign="center" fontSize={"lg"}>
               <SortableHeader
                 sortBy={sortingBy}
+                keyTitle={"itemPrice"}
                 showTitle={"price"}
                 activeSorting={activeSorting}
               />
             </Th>
-            <Th fontSize={"lg"}>
+            <Th textAlign="center" fontSize={"lg"}>
               <SortableHeader
                 sortBy={sortingBy}
                 keyTitle={"createdAt"}
@@ -156,7 +153,7 @@ const ProductTable = (props: Props) => {
                 activeSorting={activeSorting}
               />
             </Th>
-            <Th>actions</Th>
+            <Th textAlign="center">actions</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -177,7 +174,13 @@ const ProductTable = (props: Props) => {
                 className="peer-has-[:checked]:bg-red-200"
                 fontSize={"md"}
               >
-                #{product.id}
+                <Tooltip
+                  hasArrow
+                  label={`${product.id}`}
+                  aria-label={"item subtile and description"}
+                >
+                  <Text>{`${product.id.slice(0, 3)}...${product.id.slice(-3)}`}</Text>
+                </Tooltip>
               </Td>
               <Td
                 textAlign={"center"}
@@ -185,20 +188,19 @@ const ProductTable = (props: Props) => {
                 fontSize={"md"}
               >
                 <AspectRatio maxW={24} ratio={1} flexShrink={0}>
-                  <Image
-                    src={product.image}
-                    alt={product.description}
-                    objectFit={"cover"}
-                    rounded={"lg"}
-                  />
+                  <Tooltip
+                    hasArrow
+                    label={`alt: ${product.imageAlt}`}
+                    aria-label={"item subtile and description"}
+                  >
+                    <Image
+                      src={product.imageSrc}
+                      alt={product.imageAlt}
+                      objectFit={"cover"}
+                      rounded={"lg"}
+                    />
+                  </Tooltip>
                 </AspectRatio>
-              </Td>
-              <Td
-                textAlign={"center"}
-                className="peer-has-[:checked]:bg-red-200"
-                fontSize={"md"}
-              >
-                {product.name}
               </Td>
               <Td
                 textAlign={"center"}
@@ -207,10 +209,29 @@ const ProductTable = (props: Props) => {
               >
                 <Tooltip
                   hasArrow
-                  label={`in stock quantity: ${product.inStockQty}`}
+                  label={
+                    <Flex direction={"column"}>
+                      <Text>{`subtile: ${product.itemSubtitle}`}</Text>
+                      <Text>{`description: ${product.itemDescription}`}</Text>
+                    </Flex>
+                  }
+                  aria-label={"item subtile and description"}
+                >
+                  {product.itemName}
+                </Tooltip>
+              </Td>
+              <Td
+                textAlign={"center"}
+                className="peer-has-[:checked]:bg-red-200"
+                fontSize={"md"}
+              >
+                <Tooltip
+                  hasArrow
+                  label={`in stock quantity: ${product.itemAvailableQuantity ?? 0}`}
                   aria-label={"in stock quantity"}
                 >
-                  {product.inStockQty > 0 ? (
+                  {product.itemAvailableQuantity &&
+                  product.itemAvailableQuantity > 0 ? (
                     <Text color="green.500">In Stock</Text>
                   ) : (
                     <Text color="red.500">Out of Stock</Text>
@@ -222,7 +243,13 @@ const ProductTable = (props: Props) => {
                 className="peer-has-[:checked]:bg-red-200"
                 fontSize={"md"}
               >
-                {`$${product.price}`}
+                <Tooltip
+                  hasArrow
+                  label={`special price: ${dollarFormat(product.itemSpecialPrice ?? product.itemPrice)}`}
+                  aria-label={"special price"}
+                >
+                  {`${dollarFormat(product.itemPrice)}`}
+                </Tooltip>
               </Td>
               <Td
                 textAlign={"center"}
